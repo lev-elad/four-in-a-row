@@ -7,8 +7,12 @@ export const DEFAULT_DEPTH = 10;
 const WIN_SCORE = 1_000_000;
 /** Centre columns first: they are usually strongest, which makes the pruning far more effective. */
 const COLUMN_ORDER = [3, 2, 4, 1, 5, 0, 6];
-/** Value of a window of four holding 0-3 discs of one side and none of the other. */
-const WINDOW_VALUE = [0, 1, 6, 40];
+/**
+ * Value of a window of four holding 0-4 discs of one side and none of the other. A completed
+ * four needs an entry too: the search scores wins itself, but the running score passes through
+ * this table when a winning disc is placed and removed, and a missing entry would turn it into NaN.
+ */
+const WINDOW_VALUE = [0, 1, 6, 40, 0];
 const CENTRE_VALUE = 3;
 const CENTRE = (COLS - 1) / 2;
 
@@ -136,7 +140,7 @@ class Search {
   negamax(depth: number, alpha: number, beta: number, side: number): number {
     if (depth === 0) return this.score * side;
 
-    // 53 bits of fingerprint plus the depth: a different position sharing a key is vanishingly rare.
+    // 49 bits of fingerprint plus 4 bits of depth: a different position sharing a key is vanishingly rare.
     const key = ((this.keyHigh & 0x1ffff) * 0x100000000 + (this.keyLow >>> 0)) * 16 + depth;
     const stored = this.seen.get(key);
     if (stored !== undefined) {
@@ -176,10 +180,43 @@ class Search {
   }
 }
 
+/** The position cache packs the depth into 4 bits. */
+const MAX_DEPTH = 15;
+
 export interface ChooseMoveOptions {
+  /** How many moves ahead to look, up to 15. */
   depth?: number;
   /** Source of randomness for choosing between equally good moves; injectable for tests. */
   random?: () => number;
+}
+
+export interface MoveScore {
+  col: number;
+  score: number;
+}
+
+/**
+ * A score for every legal move for `player`, higher being better. The best moves carry their
+ * exact score; a worse move may only carry an upper limit that is below the best score.
+ */
+export function scoreMoves(board: Board, player: Player, depth = DEFAULT_DEPTH): MoveScore[] {
+  depth = Math.max(1, Math.min(MAX_DEPTH, Math.floor(depth)));
+  const search = new Search(board, player);
+  const scores: MoveScore[] = [];
+  let bestScore = -Infinity;
+
+  for (const col of COLUMN_ORDER) {
+    if (!search.canPlay(col)) continue;
+    // The window starts just below the best score so far, so that ties come back as exact scores.
+    const score = search.play(col, 1)
+      ? WIN_SCORE + depth
+      : -search.negamax(depth - 1, -Infinity, -(bestScore - 1), -1);
+    search.undo(col, 1);
+
+    scores.push({ col, score });
+    if (score > bestScore) bestScore = score;
+  }
+  return scores;
 }
 
 /**
@@ -191,25 +228,9 @@ export function chooseMove(
   player: Player,
   { depth = DEFAULT_DEPTH, random = Math.random }: ChooseMoveOptions = {},
 ): number {
-  const search = new Search(board, player);
-  let bestScore = -Infinity;
-  let bestColumns: number[] = [];
-
-  for (const col of COLUMN_ORDER) {
-    if (!search.canPlay(col)) continue;
-    // The window starts just below the best score so far, so that ties come back as exact scores.
-    const score = search.play(col, 1)
-      ? WIN_SCORE + depth
-      : -search.negamax(depth - 1, -Infinity, -(bestScore - 1), -1);
-    search.undo(col, 1);
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestColumns = [col];
-    } else if (score === bestScore) {
-      bestColumns.push(col);
-    }
-  }
+  const scores = scoreMoves(board, player, depth);
+  const bestScore = Math.max(...scores.map((move) => move.score));
+  const bestColumns = scores.filter((move) => move.score === bestScore).map((move) => move.col);
 
   if (bestColumns.length === 0) return -1;
   // Between equally good moves, stay as close to the centre as possible; chance decides left or right.

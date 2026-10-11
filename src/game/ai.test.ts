@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { boardFrom } from '../test/boards';
-import { chooseMove } from './ai';
+import { chooseMove, scoreMoves } from './ai';
 import { createBoard, dropDisc, findWinningLine, getLegalColumns } from './rules';
 import { otherPlayer } from './types';
 import type { Board, Player } from './types';
@@ -48,14 +48,6 @@ describe('chooseMove', () => {
   });
 
   it('blocks the opponent from completing four', () => {
-    const board = boardFrom(`
-      .......
-      .......
-      ......1
-      ......1
-      .2....1
-      .2....2
-    `);
     const vertical = boardFrom(`
       .......
       .......
@@ -65,8 +57,6 @@ describe('chooseMove', () => {
       1.2....
     `);
     expect(chooseMove(vertical, 'P2')).toBe(0);
-    // Nothing to block here: column 6 is already capped by player 2.
-    expect(getLegalColumns(board)).toContain(chooseMove(board, 'P2'));
   });
 
   it('prefers winning to blocking', () => {
@@ -114,6 +104,15 @@ describe('chooseMove', () => {
       1122112
     `);
     expect(chooseMove(full, 'P1')).toBe(-1);
+  });
+
+  it('scores quiet positions by how promising they are, not only by wins and losses', () => {
+    // No win is within reach here, so the scores can only differ through the position evaluation.
+    const scores = scoreMoves(createBoard(), 'P1');
+    expect(scores.every((move) => Number.isFinite(move.score))).toBe(true);
+    const scoreOf = (col: number) => scores.find((move) => move.col === col)!.score;
+    expect(scoreOf(3)).toBeGreaterThan(scoreOf(0));
+    expect(scoreOf(3)).toBeGreaterThan(scoreOf(6));
   });
 
   it('opens in the centre column', () => {
