@@ -1,0 +1,71 @@
+.app {
+  /* Vertical space taken by everything except the board, so the board always fits on screen. */
+  --reserve: 370px;
+  --board-width: max(
+    240px,
+    min(560px, 100vw - 32px, (100dvh - var(--reserve)) * 7 / 6)
+  );
+
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px 16px 24px;
+}
+
+.title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.5rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+}
+
+.logo {
+  display: flex;
+  gap: 3px;
+}
+
+.logo i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--p1);
+}
+
+.arena {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    'p1 p2'
+    'board board';
+  gap: 14px 10px;
+  width: min(100%, max(var(--board-width), 340px));
+}
+
+@media (min-width: 900px) {
+  .app {
+    --reserve: 290px;
+    --board-width: max(
+      240px,
+      min(560px, 100vw - 32px - 2 * 180px - 2 * 32px, (100dvh - var(--reserve)) * 7 / 6)
+    );
+    gap: 22px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .arena {
+    grid-template-columns: 180px auto 180px;
+    grid-template-areas: 'p1 board p2';
+    align-items: center;
+    gap: 32px;
+    width: auto;
+  }
+}

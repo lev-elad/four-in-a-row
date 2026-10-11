@@ -1,0 +1,50 @@
+.disc {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 -0.05em 0 rgba(0, 0, 0, 0.12);
+  transition: opacity 0.3s ease;
+}
+
+.p1 {
+  background: var(--p1);
+}
+
+.p2 {
+  background: var(--p2);
+}
+
+/* Player 2 carries an inner ring so the discs differ by more than colour. */
+.p2::after {
+  content: '';
+  position: absolute;
+  inset: 24%;
+  border-radius: 50%;
+  border: max(2px, 0.06em) solid rgba(255, 255, 255, 0.6);
+}
+
+.dimmed {
+  opacity: 0.3;
+}
+
+.winning {
+  box-shadow: 0 0 0 max(3px, 0.06em) var(--ring);
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from {
+    transform: scale(0.94);
+  }
+  to {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .winning {
+    animation: none;
+  }
+}

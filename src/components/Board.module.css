@@ -1,0 +1,12 @@
+.board {
+  grid-area: board;
+  justify-self: center;
+  display: flex;
+  width: var(--board-width);
+  padding: calc(var(--board-width) * 0.025);
+  border-radius: calc(var(--board-width) * 0.06);
+  background: var(--board);
+  box-shadow: var(--board-shadow);
+  /* Hides a falling disc until it enters the board. */
+  overflow: hidden;
+}

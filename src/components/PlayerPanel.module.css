@@ -1,0 +1,149 @@
+.panel {
+  --player: var(--p1);
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-areas:
+    'swatch name name'
+    'tag tag score';
+  align-items: center;
+  gap: 6px 10px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  /* Idle cards sit back, darker and flat; the active card is lifted to the full surface colour. */
+  background: var(--surface-idle);
+  border: 2px solid var(--border);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.p1 {
+  grid-area: p1;
+}
+
+.p2 {
+  --player: var(--p2);
+  grid-area: p2;
+}
+
+.active {
+  background: var(--surface);
+  border-color: var(--player);
+  box-shadow: var(--shadow);
+}
+
+.swatch {
+  grid-area: swatch;
+  display: block;
+  width: 26px;
+  height: 26px;
+  font-size: 26px;
+}
+
+.name {
+  grid-area: name;
+  min-width: 0;
+  width: 100%;
+  padding: 4px 6px;
+  margin-left: -6px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  font-weight: 650;
+  font-size: 1rem;
+  text-overflow: ellipsis;
+}
+
+.name:hover {
+  border-color: var(--border);
+}
+
+.name:focus {
+  border-color: var(--muted);
+  background: var(--bg);
+  outline: none;
+}
+
+.name::placeholder {
+  color: var(--text);
+  opacity: 1;
+}
+
+.name:focus::placeholder {
+  color: var(--muted);
+}
+
+.score {
+  grid-area: score;
+  justify-self: end;
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.wins {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.winsLabel {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.tag {
+  grid-area: tag;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+@media (min-width: 900px) {
+  .panel {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'swatch'
+      'name'
+      'score'
+      'tag';
+    justify-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 22px 16px 16px;
+    border-radius: 20px;
+  }
+
+  .swatch {
+    width: 44px;
+    height: 44px;
+    font-size: 44px;
+  }
+
+  .name {
+    margin-left: 0;
+    text-align: center;
+    font-size: 1.05rem;
+  }
+
+  .score {
+    justify-self: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .wins {
+    font-size: 2.5rem;
+  }
+
+  .tag {
+    margin-top: 4px;
+    font-size: 0.8rem;
+  }
+}

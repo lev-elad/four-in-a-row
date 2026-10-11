@@ -1,0 +1,92 @@
+.column {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.column[aria-disabled='true'] {
+  cursor: default;
+}
+
+.column:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: -1px;
+}
+
+.cell {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  font-size: calc(var(--board-width) / 7);
+}
+
+.hole,
+.inner {
+  position: absolute;
+  inset: 9%;
+  border-radius: 50%;
+}
+
+.hole {
+  background: var(--hole);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.18);
+}
+
+/* Full-cell box, so a translate of 100% is exactly one row. */
+.faller,
+.preview {
+  position: absolute;
+  inset: 0;
+}
+
+.faller {
+  animation: drop calc(200ms + var(--row) * 50ms) both;
+}
+
+@keyframes drop {
+  0% {
+    transform: translateY(calc((var(--row) + 1) * -100%));
+    animation-timing-function: cubic-bezier(0.45, 0, 0.9, 0.55);
+  }
+  72% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  86% {
+    transform: translateY(-9%);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.preview {
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.column:focus-visible .preview {
+  opacity: 0.4;
+}
+
+@media (hover: hover) {
+  .column:hover .preview {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faller {
+    animation: none;
+  }
+}
