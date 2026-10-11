@@ -1,12 +1,12 @@
-import type { GameStatus, Player } from '../game/types'
-import { Disc } from './Disc'
-import styles from './StatusBanner.module.css'
+import type { GameStatus, Player } from '../game/types';
+import { Disc } from './Disc';
+import styles from './StatusBanner.module.css';
 
 interface StatusBannerProps {
-  status: GameStatus
+  status: GameStatus;
   /** The player to move, or the winner once the game is won. */
-  player: Player
-  playerName: string
+  player: Player;
+  playerName: string;
 }
 
 export function StatusBanner({ status, player, playerName }: StatusBannerProps) {
@@ -23,5 +23,5 @@ export function StatusBanner({ status, player, playerName }: StatusBannerProps) 
         {status === 'draw' && 'It’s a draw'}
       </span>
     </p>
-  )
+  );
 }

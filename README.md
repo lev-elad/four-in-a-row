@@ -20,11 +20,11 @@ A web version of the classic Four in a Row game, built with React and TypeScript
 
 ## Controls
 
-| Action | Mouse / touch | Keyboard |
-| --- | --- | --- |
-| Drop a disc | Click or tap a column | `1`–`7`, or focus a column and press `Enter` / `Space` |
-| Move between columns | – | `←` / `→` |
-| Rename a player | Click the name on the player card | `Tab` to the name, then type |
+| Action               | Mouse / touch                     | Keyboard                                               |
+| -------------------- | --------------------------------- | ------------------------------------------------------ |
+| Drop a disc          | Click or tap a column             | `1`–`7`, or focus a column and press `Enter` / `Space` |
+| Move between columns | –                                 | `←` / `→`                                              |
+| Rename a player      | Click the name on the player card | `Tab` to the name, then type                           |
 
 ## Getting started
 
@@ -71,6 +71,17 @@ What is covered:
 - `src/game/rules.test.ts` – the game rules: gravity, full columns, wins in every direction, no false wins, draws
 - `src/state/gameReducer.test.ts` – turn order, end of game, starting a new game
 - `src/components/App.test.tsx` – the UI end to end: playing, winning, drawing, names, scores, keyboard
+
+## Linting and formatting
+
+[ESLint](https://eslint.org/) checks the code for problems and [Prettier](https://prettier.io/) formats it.
+
+```bash
+pnpm lint
+pnpm format
+```
+
+In VS Code, install the two recommended extensions when prompted; files are then formatted and auto-fixed on save.
 
 ## Project structure
 

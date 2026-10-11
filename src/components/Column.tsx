@@ -1,20 +1,20 @@
-import type { CSSProperties } from 'react'
-import { ROWS } from '../game/types'
-import type { Cell, Player } from '../game/types'
-import styles from './Column.module.css'
-import { Disc } from './Disc'
+import type { CSSProperties } from 'react';
+import { ROWS } from '../game/types';
+import type { Cell, Player } from '../game/types';
+import styles from './Column.module.css';
+import { Disc } from './Disc';
 
 interface ColumnProps {
-  col: number
+  col: number;
   /** The column's cells, top row first. */
-  cells: Cell[]
-  currentPlayer: Player
+  cells: Cell[];
+  currentPlayer: Player;
   /** False once the game is over. */
-  canPlay: boolean
+  canPlay: boolean;
   /** Rows of this column that are part of the winning line. */
-  winningRows: number[]
-  gameWon: boolean
-  onDrop: (col: number) => void
+  winningRows: number[];
+  gameWon: boolean;
+  onDrop: (col: number) => void;
 }
 
 export function Column({
@@ -26,9 +26,9 @@ export function Column({
   gameWon,
   onDrop,
 }: ColumnProps) {
-  const landingRow = cells.lastIndexOf(null)
-  const count = ROWS - 1 - landingRow
-  const playable = canPlay && landingRow >= 0
+  const landingRow = cells.lastIndexOf(null);
+  const count = ROWS - 1 - landingRow;
+  const playable = canPlay && landingRow >= 0;
 
   return (
     <button
@@ -64,5 +64,5 @@ export function Column({
         </span>
       ))}
     </button>
-  )
+  );
 }

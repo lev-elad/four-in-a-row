@@ -1,12 +1,12 @@
-import type { Player } from '../game/types'
-import styles from './Disc.module.css'
+import type { Player } from '../game/types';
+import styles from './Disc.module.css';
 
 interface DiscProps {
-  player: Player
+  player: Player;
   /** Part of the winning line: gets a pulsing ring. */
-  winning?: boolean
+  winning?: boolean;
   /** Faded out, used for the non-winning discs once a game is won. */
-  dimmed?: boolean
+  dimmed?: boolean;
 }
 
 /** A player's disc. Fills its parent, which sets the size. */
@@ -18,6 +18,6 @@ export function Disc({ player, winning = false, dimmed = false }: DiscProps) {
     dimmed && styles.dimmed,
   ]
     .filter(Boolean)
-    .join(' ')
-  return <span className={className} aria-hidden="true" />
+    .join(' ');
+  return <span className={className} aria-hidden="true" />;
 }

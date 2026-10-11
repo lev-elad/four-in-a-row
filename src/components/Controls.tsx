@@ -1,16 +1,16 @@
-import { useState } from 'react'
-import styles from './Controls.module.css'
+import { useState } from 'react';
+import styles from './Controls.module.css';
 
 interface ControlsProps {
-  gameOver: boolean
-  draws: number
-  hasScores: boolean
-  onNewGame: () => void
-  onResetScores: () => void
+  gameOver: boolean;
+  draws: number;
+  hasScores: boolean;
+  onNewGame: () => void;
+  onResetScores: () => void;
 }
 
 export function Controls({ gameOver, draws, hasScores, onNewGame, onResetScores }: ControlsProps) {
-  const [confirming, setConfirming] = useState(false)
+  const [confirming, setConfirming] = useState(false);
 
   return (
     <div className={styles.controls}>
@@ -33,8 +33,8 @@ export function Controls({ gameOver, draws, hasScores, onNewGame, onResetScores 
               type="button"
               className={styles.link}
               onClick={() => {
-                onResetScores()
-                setConfirming(false)
+                onResetScores();
+                setConfirming(false);
               }}
             >
               Yes, reset
@@ -55,5 +55,5 @@ export function Controls({ gameOver, draws, hasScores, onNewGame, onResetScores 
         )}
       </div>
     </div>
-  )
+  );
 }

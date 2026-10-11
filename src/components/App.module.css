@@ -1,10 +1,7 @@
 .app {
   /* Vertical space taken by everything except the board, so the board always fits on screen. */
   --reserve: 370px;
-  --board-width: max(
-    240px,
-    min(560px, 100vw - 32px, (100dvh - var(--reserve)) * 7 / 6)
-  );
+  --board-width: max(240px, min(560px, 100vw - 32px, (100dvh - var(--reserve)) * 7 / 6));
 
   min-height: 100dvh;
   display: flex;

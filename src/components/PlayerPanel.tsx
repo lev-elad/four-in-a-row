@@ -1,18 +1,18 @@
-import type { Player } from '../game/types'
-import { Disc } from './Disc'
-import styles from './PlayerPanel.module.css'
+import type { Player } from '../game/types';
+import { Disc } from './Disc';
+import styles from './PlayerPanel.module.css';
 
-export const MAX_NAME_LENGTH = 16
+export const MAX_NAME_LENGTH = 16;
 
 interface PlayerPanelProps {
-  player: Player
+  player: Player;
   /** The name as typed, possibly empty while editing. */
-  name: string
-  defaultName: string
-  wins: number
-  active: boolean
-  winner: boolean
-  onNameChange: (name: string) => void
+  name: string;
+  defaultName: string;
+  wins: number;
+  active: boolean;
+  winner: boolean;
+  onNameChange: (name: string) => void;
 }
 
 export function PlayerPanel({
@@ -30,7 +30,7 @@ export function PlayerPanel({
     (active || winner) && styles.active,
   ]
     .filter(Boolean)
-    .join(' ')
+    .join(' ');
 
   return (
     <section className={className} aria-label={defaultName}>
@@ -49,7 +49,7 @@ export function PlayerPanel({
         onFocus={(event) => event.target.select()}
         onBlur={(event) => onNameChange(event.target.value.trim())}
         onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === 'Escape') event.currentTarget.blur()
+          if (event.key === 'Enter' || event.key === 'Escape') event.currentTarget.blur();
         }}
       />
       <p className={styles.score}>
@@ -60,5 +60,5 @@ export function PlayerPanel({
         {winner ? 'Winner' : active ? 'Your turn' : ' '}
       </span>
     </section>
-  )
+  );
 }
