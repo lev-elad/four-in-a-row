@@ -79,4 +79,10 @@ describe('gameReducer', () => {
     const third = gameReducer(second, { type: 'NEW_GAME' });
     expect(third.currentPlayer).toBe('P1');
   });
+
+  it('starts a new game with a chosen starting player', () => {
+    const state = gameReducer(createInitialState('P1'), { type: 'NEW_GAME', startingPlayer: 'P1' });
+    expect(state.startingPlayer).toBe('P1');
+    expect(state.currentPlayer).toBe('P1');
+  });
 });

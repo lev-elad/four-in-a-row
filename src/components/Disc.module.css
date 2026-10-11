@@ -13,7 +13,7 @@
 }
 
 .p2 {
-  background: var(--p2);
+  background: var(--p2-fill);
 }
 
 /* Player 2 carries an inner ring so the discs differ by more than colour. */

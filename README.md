@@ -1,12 +1,13 @@
 # Four in a Row
 
-A web version of the classic Four in a Row game, built with React and TypeScript. Two players share one screen and take turns dropping discs; the first to line up four wins.
+A web version of the classic Four in a Row game, built with React and TypeScript. Play against a friend on the same screen or against the computer; the first to line up four discs wins.
 
 ## Features
 
-- Two-player local play on a 7 × 6 board
+- Two modes on a 7 × 6 board: two players on one screen, or one player against the computer
+- A computer opponent that looks ten moves ahead
 - Animated disc drop, with the winning four highlighted
-- Player names and a running score (wins and draws), remembered between visits
+- Player names and a running score (wins and draws) for each mode, remembered between visits
 - The starting player alternates from game to game
 - Works on desktop and phones, in light and dark themes (follows your system setting)
 - Fully playable from the keyboard
@@ -69,8 +70,9 @@ pnpm test src/game/rules.test.ts
 What is covered:
 
 - `src/game/rules.test.ts` – the game rules: gravity, full columns, wins in every direction, no false wins, draws
+- `src/game/ai.test.ts` – the computer player: takes wins, blocks threats, beats random play, answers quickly
 - `src/state/gameReducer.test.ts` – turn order, end of game, starting a new game
-- `src/components/App.test.tsx` – the UI end to end: playing, winning, drawing, names, scores, keyboard
+- `src/components/App.test.tsx` – the UI end to end: playing, winning, drawing, names, scores, keyboard, playing against the computer
 
 ## Linting and formatting
 
@@ -87,14 +89,14 @@ In VS Code, install the two recommended extensions when prompted; files are then
 
 ```
 src/
-  game/         Pure game rules, no React (board, moves, win detection)
-  state/        Game state machine, drop timing, localStorage persistence
+  game/         Pure game rules and the computer player, no React
+  state/        Game state machine, drop timing, computer turns, localStorage persistence
   components/   React components and their CSS Modules
   styles/       Colour tokens for the light and dark themes
   test/         Test setup and board-building helpers
 ```
 
-Dependencies point one way: components → state → game. The rules in `src/game/` know nothing about the UI, so they can be reused by a computer opponent.
+Dependencies point one way: components → state → game. The code in `src/game/` knows nothing about the UI. The computer player (`src/game/ai.ts`) is a minimax search with alpha-beta pruning that makes its moves through the same action a person's click does.
 
 ## Tech stack
 
@@ -102,7 +104,7 @@ React 19, TypeScript, Vite, CSS Modules, Vitest. There is no back end: names and
 
 ## Roadmap
 
-- Play against the computer
+- Difficulty levels for the computer
 - Online play
 
 ## License

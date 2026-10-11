@@ -9,6 +9,10 @@ interface PlayerPanelProps {
   /** The name as typed, possibly empty while editing. */
   name: string;
   defaultName: string;
+  /** Shows the default name as fixed text instead of an editable field (the computer). */
+  nameLocked?: boolean;
+  /** Shown under the name while it is this player's turn. */
+  turnLabel?: string;
   wins: number;
   active: boolean;
   winner: boolean;
@@ -19,6 +23,8 @@ export function PlayerPanel({
   player,
   name,
   defaultName,
+  nameLocked = false,
+  turnLabel = 'Your turn',
   wins,
   active,
   winner,
@@ -37,27 +43,31 @@ export function PlayerPanel({
       <span className={styles.swatch}>
         <Disc player={player} />
       </span>
-      <input
-        className={styles.name}
-        value={name}
-        placeholder={defaultName}
-        maxLength={MAX_NAME_LENGTH}
-        aria-label={`${defaultName} name`}
-        autoComplete="off"
-        spellCheck={false}
-        onChange={(event) => onNameChange(event.target.value)}
-        onFocus={(event) => event.target.select()}
-        onBlur={(event) => onNameChange(event.target.value.trim())}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter' || event.key === 'Escape') event.currentTarget.blur();
-        }}
-      />
+      {nameLocked ? (
+        <span className={`${styles.name} ${styles.locked}`}>{defaultName}</span>
+      ) : (
+        <input
+          className={styles.name}
+          value={name}
+          placeholder={defaultName}
+          maxLength={MAX_NAME_LENGTH}
+          aria-label={`${defaultName} name`}
+          autoComplete="off"
+          spellCheck={false}
+          onChange={(event) => onNameChange(event.target.value)}
+          onFocus={(event) => event.target.select()}
+          onBlur={(event) => onNameChange(event.target.value.trim())}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === 'Escape') event.currentTarget.blur();
+          }}
+        />
+      )}
       <p className={styles.score}>
         <span className={styles.wins}>{wins}</span>
         <span className={styles.winsLabel}>{wins === 1 ? 'win' : 'wins'}</span>
       </p>
       <span className={styles.tag} aria-hidden="true">
-        {winner ? 'Winner' : active ? 'Your turn' : ' '}
+        {winner ? 'Winner' : active ? turnLabel : ' '}
       </span>
     </section>
   );

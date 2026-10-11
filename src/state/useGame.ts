@@ -54,17 +54,18 @@ export function useGame(onGameEnd: (result: GameResult) => void) {
     [state, onGameEnd],
   );
 
-  const newGame = useCallback(() => {
+  /** Starts a new game; without an argument the starting player alternates. */
+  const newGame = useCallback((startingPlayer?: Player) => {
     clearTimers();
     // A game that ended while its last disc was still falling still counts.
     finishPending.current?.();
     finishPending.current = null;
     setLandedCount(0);
-    dispatch({ type: 'NEW_GAME' });
+    dispatch({ type: 'NEW_GAME', startingPlayer });
   }, []);
 
   const settled = landedCount >= state.moveCount;
   const visibleStatus: GameStatus = settled ? state.status : 'playing';
 
-  return { state, visibleStatus, drop, newGame };
+  return { state, settled, visibleStatus, drop, newGame };
 }

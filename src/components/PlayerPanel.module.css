@@ -56,7 +56,16 @@
   text-overflow: ellipsis;
 }
 
-.name:hover {
+.locked {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.locked:hover {
+  border-color: transparent;
+}
+
+.name:not(.locked):hover {
   border-color: var(--border);
 }
 
