@@ -13,7 +13,10 @@ export interface GameState {
   moveCount: number;
 }
 
-export type GameAction = { type: 'DROP'; col: number } | { type: 'NEW_GAME' };
+export type GameAction =
+  | { type: 'DROP'; col: number }
+  /** Without a starting player, the one who did not start the previous game goes first. */
+  | { type: 'NEW_GAME'; startingPlayer?: Player };
 
 export function createInitialState(startingPlayer: Player = 'P1'): GameState {
   return {
@@ -51,6 +54,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...next, currentPlayer: otherPlayer(state.currentPlayer) };
     }
     case 'NEW_GAME':
-      return createInitialState(otherPlayer(state.startingPlayer));
+      return createInitialState(action.startingPlayer ?? otherPlayer(state.startingPlayer));
   }
 }

@@ -6,10 +6,10 @@ interface StatusBannerProps {
   status: GameStatus;
   /** The player to move, or the winner once the game is won. */
   player: Player;
-  playerName: string;
+  message: string;
 }
 
-export function StatusBanner({ status, player, playerName }: StatusBannerProps) {
+export function StatusBanner({ status, player, message }: StatusBannerProps) {
   return (
     <p className={`${styles.banner} ${status === 'playing' ? '' : styles.over}`} role="status">
       {status !== 'draw' && (
@@ -17,11 +17,7 @@ export function StatusBanner({ status, player, playerName }: StatusBannerProps) 
           <Disc player={player} />
         </span>
       )}
-      <span className={styles.text}>
-        {status === 'playing' && `${playerName}’s turn`}
-        {status === 'won' && `${playerName} wins!`}
-        {status === 'draw' && 'It’s a draw'}
-      </span>
+      <span className={styles.text}>{message}</span>
     </p>
   );
 }
